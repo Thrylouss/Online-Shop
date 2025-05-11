@@ -1,0 +1,6 @@
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN
+PassengerAppRoot "/home/host6049/online-shop.milliybiz.uz"
+PassengerBaseURI "/"
+PassengerPython "/home/host6049/virtualenv/online-shop.milliybiz.uz/3.10/bin/python"
+PassengerAppLogFile "/home/host6049/logs/OnlineShop.log"
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END
