@@ -37,6 +37,11 @@ class CustomUser(AbstractUser):
 
 class News(models.Model):
     image = models.ImageField(upload_to='news_images/')
+    mobile_image = models.ImageField(upload_to='news_images/')
+
+    image_ru = models.ImageField(upload_to='news_images/')
+    mobile_image_ru = models.ImageField(upload_to='news_images/')
+
     NEWS_CATEGORY_CHOICES = [
         ("first", "first"),
         ("second", "second")
@@ -49,10 +54,14 @@ class News(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
+    name_ru = models.CharField(max_length=100)
+    description_ru = models.CharField(max_length=100)
     image = models.ImageField(upload_to='category_images/', null=True, blank=True)
     mobile_image = models.ImageField(upload_to='category_images/mobile/', null=True, blank=True)  # New mobile image field
-    subcategory = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
-    slug = models.SlugField(unique=True)
+
+    image_ru = models.ImageField(upload_to='category_images/')
+    mobile_image_ru = models.ImageField(upload_to='category_images/')
+
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -60,19 +69,43 @@ class Category(models.Model):
         return self.name
 
 
+class SubCategory(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=100, null=True, blank=True)
+    name_ru = models.CharField(max_length=100)
+    description_ru = models.CharField(max_length=100, null=True, blank=True)
+
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
 class Product(models.Model):
     name = models.CharField(max_length=100)
     description = models.JSONField()
     characteristics = models.JSONField()
+
+    name_ru = models.CharField(max_length=100)
+    description_ru = models.JSONField()
+    characteristics_ru = models.JSONField()
+
     price = models.DecimalField(max_digits=10, decimal_places=2)
     discount = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField()
     product_code = models.PositiveIntegerField(unique=True, blank=True, null=True)
     status_type = [
-        ('mahsus_taklif', 'Mahsus taklif'),
-        ('yangilik', 'Yangilik'),
+        ('Mahsus taklif', 'mahsus_taklif'),
+        ('Yangilik', 'yangilik'),
     ]
     status = models.CharField(max_length=20, choices=status_type, default='yangilik', blank=True, null=True)
+
+    status_type_ru = [
+        ('Специальное', 'special'),
+        ('Новое', 'new'),
+    ]
+    status_ru = models.CharField(max_length=20, choices=status_type_ru, default='new', blank=True, null=True)
+
     image1 = models.ImageField(upload_to='product_images/', null=True, blank=True)
     image2 = models.ImageField(upload_to='product_images/', null=True, blank=True)
     image3 = models.ImageField(upload_to='product_images/', null=True, blank=True)
