@@ -37,10 +37,10 @@ class CustomUser(AbstractUser):
 
 class News(models.Model):
     image = models.ImageField(upload_to='news_images/')
-    mobile_image = models.ImageField(upload_to='news_images/')
+    mobile_image = models.ImageField(upload_to='news_images/', null=True, blank=True)
 
-    image_ru = models.ImageField(upload_to='news_images/')
-    mobile_image_ru = models.ImageField(upload_to='news_images/')
+    image_ru = models.ImageField(upload_to='news_images/', null=True, blank=True)
+    mobile_image_ru = models.ImageField(upload_to='news_images/', null=True, blank=True)
 
     NEWS_CATEGORY_CHOICES = [
         ("first", "first"),
@@ -54,13 +54,13 @@ class News(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
-    name_ru = models.CharField(max_length=100)
-    description_ru = models.CharField(max_length=100)
+    name_ru = models.CharField(max_length=100, null=True, blank=True)
+    description_ru = models.CharField(max_length=100, null=True, blank=True)
     image = models.ImageField(upload_to='category_images/', null=True, blank=True)
     mobile_image = models.ImageField(upload_to='category_images/mobile/', null=True, blank=True)  # New mobile image field
 
-    image_ru = models.ImageField(upload_to='category_images/')
-    mobile_image_ru = models.ImageField(upload_to='category_images/')
+    image_ru = models.ImageField(upload_to='category_images/', null=True, blank=True)
+    mobile_image_ru = models.ImageField(upload_to='category_images/', null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -86,9 +86,9 @@ class Product(models.Model):
     description = models.JSONField()
     characteristics = models.JSONField()
 
-    name_ru = models.CharField(max_length=100)
-    description_ru = models.JSONField()
-    characteristics_ru = models.JSONField()
+    name_ru = models.CharField(max_length=100, null=True, blank=True)
+    description_ru = models.JSONField(null=True, blank=True)
+    characteristics_ru = models.JSONField(null=True, blank=True)
 
     price = models.DecimalField(max_digits=10, decimal_places=2)
     discount = models.DecimalField(max_digits=10, decimal_places=2)
