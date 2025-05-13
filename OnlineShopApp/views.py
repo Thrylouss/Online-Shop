@@ -38,12 +38,17 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     permission_classes = [AllowAny]
 
-    @action(detail=False, methods=['get'], url_path='subcategory/(?P<category_id>[^/.]+)')
-    def get_subcategories(self, request, category_id=None):
-        category = Category.objects.get(pk=category_id)
-        subcategories = category.category_set.all()
-        serializer = self.get_serializer(subcategories, many=True)
+    @action(detail=True, methods=['get'])
+    def get_subcategories(self, request, pk=None):
+        subcategories = SubCategory.objects.filter(category_id=pk)
+        serializer = SubCategorySerializer(subcategories, many=True)
         return Response(serializer.data)
+
+
+class SubCategoryViewSet(viewsets.ModelViewSet):
+    queryset = SubCategory.objects.all()
+    serializer_class = SubCategorySerializer
+    permission_classes = [AllowAny]
 
 
 class NewsViewSet(viewsets.ModelViewSet):

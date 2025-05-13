@@ -26,6 +26,7 @@ router.register(r'categories', views.CategoryViewSet)
 router.register(r'orders', views.OrderViewSet)
 router.register(r'basket', views.BasketItemViewSet)
 router.register(r'orders_item', views.OrderItemViewSet)
+router.register(r'subcategories', views.SubCategoryViewSet)
 # router.register(r'product_images', views.ProductImageViewSet)
 
 

@@ -68,6 +68,12 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class SubCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubCategory
+        fields = '__all__'
+
+
 class NewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = News

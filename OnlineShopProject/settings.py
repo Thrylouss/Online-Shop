@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-&)!$-a%2vs8yfjs%9!1l_%0lc2+z%yd-h8g$s*bv0f&(m67f38
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['online-shop.milliybiz.uz']
+ALLOWED_HOSTS = ['online-shop.milliybiz.uz', '127.0.0.1']
 
 
 CORS_ALLOW_ALL_ORIGINS = True
