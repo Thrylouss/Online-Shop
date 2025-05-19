@@ -228,3 +228,37 @@ class PhoneVerificationCode(models.Model):
         time_diff = now() - self.created_at
         return time_diff.total_seconds() <= 300  # 300 секунд = 5 минут
 
+
+class SiteSettings(models.Model):
+    LANGUAGE_CHOICES = [
+        ('ru', 'Русский'),
+        ('uz', 'Oʻzbek'),
+        ('en', 'English'),
+    ]
+
+    default_language = models.CharField(max_length=10, choices=LANGUAGE_CHOICES, default='ru')
+
+    facebook_url = models.URLField(blank=True, null=True)
+    instagram_url = models.URLField(blank=True, null=True)
+    telegram_url = models.URLField(blank=True, null=True)
+
+    fallback_image = models.ImageField(
+        upload_to='site/fallback/',
+        blank=True,
+        null=True,
+        help_text='Изображение, которое будет использоваться по умолчанию, если у продукта нет фото.'
+    )
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.pk and SiteSettings.objects.exists():
+            raise ValueError("Можно создать только одну запись SiteSettings.")
+        return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return "Настройки сайта"
+
+    class Meta:
+        verbose_name = "Настройки сайта"
+        verbose_name_plural = "Настройки сайта"

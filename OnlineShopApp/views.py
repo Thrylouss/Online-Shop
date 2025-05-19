@@ -115,46 +115,17 @@ class OrderItemViewSet(viewsets.ModelViewSet):
 
 
 class BasketItemViewSet(viewsets.ModelViewSet):
-    queryset = BasketItem.objects.all()
+    queryset = BasketItem.objects.select_related('product').all()
     serializer_class = BasketItemSerializer
-    permission_classes = [IsAuthenticated]  # Только авторизованные пользователи
+    permission_classes = [IsAuthenticated]
 
-    def create(self, request, *args, **kwargs):
-        print("Authenticated user:", request.user)  # Debugging
-        print("Request data:", request.data)
-
-        if request.user.is_anonymous:
-            return Response({"error": "Пользователь не аутентифицирован"}, status=status.HTTP_401_UNAUTHORIZED)
-
-        # Получаем `product_id`
-        product_id = request.data.get('product_id')
-        amount = int(request.data.get('amount', 1))
-
-        if not product_id:
-            return Response({"error": "Не указан ID товара"}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Проверяем, существует ли продукт
-        try:
-            product = Product.objects.get(id=product_id)
-        except Product.DoesNotExist:
-            return Response({"error": "Товар не найден"}, status=status.HTTP_404_NOT_FOUND)
-
-        # Проверяем, есть ли уже товар в корзине
-        basket_item, created = BasketItem.objects.get_or_create(
-            user=request.user, product=product
-        )
-
-        if not created:
-            basket_item.amount += amount
-            basket_item.save()
-
-        serializer = self.get_serializer(basket_item)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        return BasketItem.objects.filter(user=self.request.user)
 
     @action(detail=False, methods=['get'], url_path='my-basket')
     def get_basket_items(self, request):
-        basket_items = BasketItem.objects.filter(user=request.user)
-        serializer = self.get_serializer(basket_items, many=True)
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
 
@@ -233,3 +204,9 @@ class VerifyCodeView(APIView):
 
         return Response({"error": "Неверный код или он уже использован!"},
                         status=status.HTTP_400_BAD_REQUEST)
+
+
+class SiteSettingsView(viewsets.ModelViewSet):
+    queryset = SiteSettings.objects.all()
+    serializer_class = SiteSettingsSerializer
+    permission_classes = [AllowAny]
