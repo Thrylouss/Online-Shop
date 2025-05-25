@@ -95,14 +95,14 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField()
     product_code = models.PositiveIntegerField(unique=True, blank=True, null=True)
     status_type = [
-        ('Mahsus taklif', 'mahsus_taklif'),
-        ('Yangilik', 'yangilik'),
+        ('mahsus_taklif', 'Mahsus taklif'),
+        ('yangilik', 'Yangilik'),
     ]
     status = models.CharField(max_length=20, choices=status_type, default='yangilik', blank=True, null=True)
 
     status_type_ru = [
-        ('Специальное', 'special'),
-        ('Новое', 'new'),
+        ('special', 'Специальное'),
+        ('new', 'Новое'),
     ]
     status_ru = models.CharField(max_length=20, choices=status_type_ru, default='new', blank=True, null=True)
 
